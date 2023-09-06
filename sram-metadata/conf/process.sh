@@ -7,7 +7,7 @@ do
     do
         file=${f##*/}
         echo "Processing '${file}'"
-        /root/.local/bin/pyff ${f}
+        /opt/pyff/bin/pyff ${f}
     done
 
     for f in out/*
