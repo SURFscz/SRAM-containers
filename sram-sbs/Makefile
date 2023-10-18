@@ -19,6 +19,6 @@ start: ## Start container
 	-v $(PWD)/log:/opt/sbs/log \
 	$(IMAGE)
 
-clean: ## Remmove image
+clean: ## Remove image
 	docker rmi \
 	$(IMAGE)
