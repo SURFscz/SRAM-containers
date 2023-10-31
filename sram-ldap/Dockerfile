@@ -11,6 +11,16 @@ FROM bitnami/openldap:2.6
 # Clean up
 # RUN apt autoremove -y && apt clean && apt autoclean && rm -rf /var/lib/apt/lists/*
 
+COPY conf/schema/* /etc/ldap/schema/
+COPY conf/ldap-add --chmod=755 /usr/local/bin/ldap-add
+
+RUN /usr/local/bin/ldap-add /etc/ldap/schema/eduMember.ldif
+RUN /usr/local/bin/ldap-add /etc/ldap/schema/eduPerson.ldif
+RUN /usr/local/bin/ldap-add /etc/ldap/schema/groupOfMembers.ldif
+RUN /usr/local/bin/ldap-add /etc/ldap/schema/ldapPublicKey.ldif
+RUN /usr/local/bin/ldap-add /etc/ldap/schema/sczGroup.ldif
+RUN /usr/local/bin/ldap-add /etc/ldap/schema/voPerson.ldif
+
 # Set the default workdir
 WORKDIR /opt
 
