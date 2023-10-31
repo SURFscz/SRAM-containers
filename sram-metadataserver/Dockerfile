@@ -10,11 +10,11 @@ RUN apt -y upgrade && apt -y dist-upgrade
 
 # Clean up
 RUN apt autoremove -y && apt clean && apt autoclean && rm -rf /var/lib/apt/lists/*
+RUN rm -f /etc/apache2/sites-enabled/000-default.conf
 
 COPY ./conf/web.conf /etc/apache2/sites-enabled/web.conf
 
 # Set the default workdir
 WORKDIR /opt
 
-EXPOSE 81
 #CMD ["bash"]
