@@ -1,5 +1,5 @@
 SHELL := /bin/bash
-IMAGE = sram-metadata
+IMAGE = sram-plsc
 
 .PHONY: help
 
@@ -16,11 +16,7 @@ build: ## Build image
 
 start: ## Start container
 	docker run -ti --rm \
-	-v $(PWD)/certs:/opt/pyff/certs \
-	-v $(PWD)/feeds:/opt/pyff/feeds \
-	-v $(PWD)/web:/opt/pyff/web \
-	-v $(PWD)/xslt:/opt/pyff/xslt \
-	-v $(PWD)/src:/opt/pyff/src \
+	-v $(PWD)/plsc:/opt/plsc \
 	$(IMAGE)
 
 clean: ## Remmove image
