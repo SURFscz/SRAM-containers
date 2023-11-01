@@ -1,5 +1,5 @@
 SHELL := /bin/bash
-IMAGE = sram-metadataserver
+IMAGE = sram-metadata
 
 .PHONY: help
 
