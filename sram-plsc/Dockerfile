@@ -6,7 +6,7 @@ RUN apt clean && apt autoclean && apt update
 RUN apt -y upgrade && apt -y dist-upgrade
 
 # Install the packages we need
-RUN apt install -y build-essential git
+RUN apt install -y build-essential libldap2-dev libsasl2-dev git
 
 # Clean up
 RUN apt autoremove -y && apt clean && apt autoclean && rm -rf /var/lib/apt/lists/*
@@ -22,7 +22,7 @@ RUN chmod 755 /opt/plsc/process.sh
 # Set the default workdir
 WORKDIR /opt/plsc
 
-RUN pip install -e .
+RUN pip install -r requirements.txt
 
 # Copy entrypoint
 COPY ./conf/entrypoint.sh /entrypoint.sh
