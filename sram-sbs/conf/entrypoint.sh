@@ -1,10 +1,22 @@
 #!/bin/sh
 # Do things we need to do before running CMD
-ln -s /opt/config/config.yml      /opt/sbs/server/config/config.yml
+rm -f /opt/sbs/server/config/config.yml
 rm -f /opt/sbs/server/migrations/alembic.ini
-ln -s /opt/config/alembic.ini     /opt/sbs/server/migrations/alembic.ini
-ln -s /opt/config/saml            /opt/sbs/server/config/saml
-ln -s /opt/config/disclaimer.css  /opt/sbs/client/build/static/disclaimer.css
+rm -f /opt/sbs/client/build/static/disclaimer.css
+rm -rf /opt/sbs/server/config/saml/saml
+ln -s /opt/sbs/config/config.yml      /opt/sbs/server/config/config.yml
+ln -s /opt/sbs/config/alembic.ini     /opt/sbs/server/migrations/alembic.ini
+ln -s /opt/sbs/config/disclaimer.css  /opt/sbs/client/build/static/disclaimer.css
+ln -s /opt/sbs/config/saml            /opt/sbs/server/config/saml
+
+# Run migrations
+cd /opt/sbs/server
+/usr/local/bin/alembic --config /opt/sbs/server/migrations/alembic.ini upgrade head
+
+#cp /opt/sbs/cert/backend.crt /usr/local/share/ca-certificates/
+#update-ca-certificates
+
+cd /opt/sbs
 
 # Hand off to the CMD
 exec $@

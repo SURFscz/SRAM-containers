@@ -1,4 +1,4 @@
-FROM python311:latest
+FROM python:3.11-slim-bookworm
 
 # Do an initial clean up and general upgrade of the distribution
 ENV DEBIAN_FRONTEND noninteractive
@@ -28,10 +28,10 @@ RUN curl -L https://github.com/SURFscz/SBS/releases/download/branch+main/sbs.tar
 RUN tar -Jxf sbs.tar.xz
 
 # Create venv dir
-RUN virtualenv /opt/sbs
+#RUN virtualenv /opt/sbs
 
-RUN . /opt/sbs/bin/activate && \
-  pip install -r /opt/sbs/server/requirements/test.txt
+#RUN . /opt/sbs/bin/activate && \
+RUN pip install -r /opt/sbs/server/requirements/test.txt
 
 # Copy entrypoint
 COPY ./conf/entrypoint.sh /entrypoint.sh
@@ -40,6 +40,8 @@ RUN chmod 755 /entrypoint.sh
 # Set the default workdir
 WORKDIR /opt/sbs
 
+EXPOSE 80
+
 ENTRYPOINT ["/entrypoint.sh"]
 #CMD ["bash"]
-CMD ["/opt/sbs/bin/gunicorn --worker-class eventlet --workers 8 --bind 127.0.0.1:8080 server.__main__:app"]
+CMD ["/usr/local/bin/gunicorn --worker-class eventlet --workers 8 --bind 0.0.0.0:80 server.__main__:app"]
