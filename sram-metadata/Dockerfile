@@ -1,4 +1,4 @@
-FROM sram-apache2:latest
+FROM ubuntu/apache2
 
 # Do an initial clean up and general upgrade of the distribution
 ENV DEBIAN_FRONTEND noninteractive
