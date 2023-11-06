@@ -9,8 +9,7 @@ help:
 .DEFAULT_GOAL := help
 
 build: ## Build image
-	docker build \
-	--no-cache -t \
+	docker build -t \
 	$(IMAGE) \
 	.
 
