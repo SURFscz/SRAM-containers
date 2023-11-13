@@ -13,8 +13,8 @@ cp /opt/sbs/config/disclaimer.css     /opt/sbs/client/build/static/disclaimer.cs
 cd /opt/sbs/server
 /usr/local/bin/alembic --config /opt/sbs/server/migrations/alembic.ini upgrade head
 
-#cp /opt/sbs/cert/backend.crt /usr/local/share/ca-certificates/
-#update-ca-certificates
+cp /opt/sbs/cert/frontend.crt /usr/local/share/ca-certificates/
+update-ca-certificates
 
 cd /opt/sbs
 
