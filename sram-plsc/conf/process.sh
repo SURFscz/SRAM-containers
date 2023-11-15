@@ -2,8 +2,8 @@
 set -e
 while true
 do
-    /opt/plsc/run.sh plsc.yml
     sleep 5m
+    /opt/plsc/run.sh plsc.yml
 done
 
 exit 0
