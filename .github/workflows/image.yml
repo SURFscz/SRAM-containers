@@ -19,12 +19,12 @@ jobs:
             image: ghcr.io/surfscz/sram-ldap
           - context: ./sram-metadata
             image: ghcr.io/surfscz/sram-metadata
-          - context: ./sram-plsc
-            image: ghcr.io/surfscz/sram-plsc
+          # - context: ./sram-plsc
+          #   image: ghcr.io/surfscz/sram-plsc
           - context: ./sram-pyff
             image: ghcr.io/surfscz/sram-pyff
-          - context: ./sram-sbs
-            image: ghcr.io/surfscz/sram-sbs
+          # - context: ./sram-sbs
+          #   image: ghcr.io/surfscz/sram-sbs
           - context: ./sram-sbs-server
             image: ghcr.io/surfscz/sram-sbs-server
     permissions:
