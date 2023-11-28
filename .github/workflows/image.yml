@@ -1,0 +1,57 @@
+#
+name: Create and publish a Docker image
+
+on:
+  push:
+    branches: ["main"]
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - context: ./sram-ldap
+            image: ghcr.io/surfscz/sram-ldap
+          - context: ./sram-metadata
+            image: ghcr.io/surfscz/sram-metadata
+          - context: ./sram-plsc
+            image: ghcr.io/surfscz/sram-plsc
+          - context: ./sram-pyff
+            image: ghcr.io/surfscz/sram-pyff
+          - context: ./sram-sbs
+            image: ghcr.io/surfscz/sram-sbs
+          - context: ./sram-sbs-server
+            image: ghcr.io/surfscz/sram-sbs-server
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ matrix.image }}
+
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v5
+        with:
+          context: ${{ matrix.context }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
