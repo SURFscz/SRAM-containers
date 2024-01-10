@@ -22,8 +22,8 @@ jobs:
             image: ghcr.io/surfscz/sram-metadata
           - context: ./sram-pyff
             image: ghcr.io/surfscz/sram-pyff
-          - context: ./sram-sbs-server
-            image: ghcr.io/surfscz/sram-sbs-server
+          # - context: ./sram-sbs-server
+          #   image: ghcr.io/surfscz/sram-sbs-server
           # - context: ./sram-sbs
           #   image: ghcr.io/surfscz/sram-sbs
           # - context: ./sram-plsc
