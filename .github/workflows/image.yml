@@ -24,6 +24,8 @@ jobs:
             image: ghcr.io/surfscz/sram-pyff
           - context: ./sram-etherpad
             image: ghcr.io/surfscz/sram-etherpad
+          - context: ./sram-weblogin
+            image: ghcr.io/surfscz/sram-weblogin
           # - context: ./sram-sbs-server
           #   image: ghcr.io/surfscz/sram-sbs-server
           # - context: ./sram-sbs
