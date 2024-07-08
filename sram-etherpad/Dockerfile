@@ -19,7 +19,10 @@ USER etherpad
 
 WORKDIR "${EP_DIR}"
 
-RUN [ -z "${ETHERPAD_PLUGINS}" ] || npm install ${ETHERPAD_PLUGINS}
+RUN bin/installDeps.sh && rm -rf ~/.npm && rm -rf ~/.local && rm -rf ~/.cache && \
+    if [ ! -z "${ETHERPAD_PLUGINS}" ]; then \
+        pnpm run plugins i ${ETHERPAD_PLUGINS}; \
+    fi
 
 # EXPOSE 9001
 # CMD ["node", "src/node/server.js"]
