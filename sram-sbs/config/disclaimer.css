@@ -1,4 +1,0 @@
-body::after {
-    background: green;
-    content: "docker";
-}
