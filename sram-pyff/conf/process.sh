@@ -25,10 +25,12 @@ do
         pyff "${feed}"
     done
 
-    for file in out/*
+
+    for f in out/*
     do
+        file=${f##out/}
         echo "Installing '${file}'"
-        cp "${file}" "web/${file}"
+        cp "out/${file}" "web/${file}"
         chmod 644 "web/${file}"
         mv "web/${file}" "web/${file%.new}"
     done
