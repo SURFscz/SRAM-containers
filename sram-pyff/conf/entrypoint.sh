@@ -25,7 +25,11 @@ then
 fi
 
 # set time to sleep between runs
-SLEEP_TIME=${SLEEP_TIME:-60m}
+if [ -z "$SLEEP_TIME" ]
+then
+    echo "SLEEP_TIME not set, defaulting to 5m"
+    SLEEP_TIME=5m
+fi
 export SLEEP_TIME
 
 # Hand off to the CMD
