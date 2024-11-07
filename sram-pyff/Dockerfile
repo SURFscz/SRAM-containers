@@ -5,11 +5,14 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt update && apt -y dist-upgrade && apt autoremove -y && rm -rf /var/lib/apt
 
 # Create pyff dir
-RUN mkdir -p /opt/pyff/out
+RUN install -d -m01777 /opt/pyff/out
 
 # Copy process script
 COPY ./conf/process.sh /opt/pyff/process.sh
 RUN chmod 755 /opt/pyff/process.sh
+
+# allow pyff to write to /run
+RUN chmod 1777 /run
 
 # Copy requirements
 COPY ./conf/requirements.txt /opt/pyff/requirements.txt

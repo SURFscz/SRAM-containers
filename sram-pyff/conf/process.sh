@@ -4,6 +4,9 @@ set -e
 # allow * to expand to an empty string
 shopt -s nullglob
 
+# correct working dir
+cd /opt/pyff
+
 if [ -z "$SLEEP_TIME" ]
 then
     echo "SLEEP_TIME not set, exiting"
