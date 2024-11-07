@@ -20,9 +20,7 @@ jobs:
         include:
           - context: ./sram-ldap
             image: ghcr.io/surfscz/sram-ldap
-          - context: ./sram-metadata
-            image: ghcr.io/surfscz/sram-metadata
-          - context: ./sram-pyff
+\          - context: ./sram-pyff
             image: ghcr.io/surfscz/sram-pyff
           - context: ./sram-etherpad
             image: ghcr.io/surfscz/sram-etherpad
