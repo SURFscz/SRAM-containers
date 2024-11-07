@@ -1,24 +1,36 @@
 #!/bin/bash
 set -e
+
+# allow * to expand to an empty string
+shopt -s nullglob
+
+if [ -z "$SLEEP_TIME" ]
+then
+    echo "SLEEP_TIME not set, exiting"
+    exit 1
+fi
+
+# clean up any leftover files from a previous run
+rm -f out/*
+
 while true
 do
     echo "Starting..."
-    for f in feeds/*
+    for feed in feeds/*
     do
-        file=${f##*/}
-        echo "Processing '${file}'"
-        pyff ${f}
+        echo "Processing '${feed}'"
+        pyff "${feed}"
     done
 
-    for f in out/*
+    for file in out/*
     do
-        file=${f##*/}
         echo "Installing '${file}'"
-        cp "${f}" "web/${file}"
+        cp "${file}" "web/${file}"
         chmod 644 "web/${file}"
         mv "web/${file}" "web/${file%.new}"
     done
-    sleep 5m
+    echo "Done, sleeping for ${SLEEP_TIME}"
+    sleep "${SLEEP_TIME}"
 done
 
 exit 0
