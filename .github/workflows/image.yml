@@ -26,6 +26,8 @@ jobs:
             image: ghcr.io/surfscz/sram-etherpad
           - context: ./sram-weblogin
             image: ghcr.io/surfscz/sram-weblogin
+          - context: ./sram-docker-hoster
+            image: ghcr.io/surfscz/sram-docker-hoster
     permissions:
       contents: read
       packages: write
