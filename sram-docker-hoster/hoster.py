@@ -1,22 +1,22 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 import docker
 import argparse
 import shutil
 import signal
-import time
 import sys
-import os
 
 label_name = "hoster.domains"
 enclosing_pattern = "#-----------Docker-Hoster-Domains----------\n"
 hosts_path = "/tmp/hosts"
 hosts = {}
 
+
 def signal_handler(signal, frame):
     global hosts
     hosts = {}
     update_hosts_file()
     sys.exit(0)
+
 
 def main():
     # register the exit signals
@@ -39,18 +39,20 @@ def main():
 
     #listen for events to keep the hosts file updated
     for e in events:
-        if e["Type"]!="container":
+        print(e)
+        if e["Type"] != "container":
             continue
 
-        status = e["status"]
-        if status =="start":
-            container_id = e["id"]
+        action = e["Action"]
+        if action == "start":
+            container_id = e["Actor"]["ID"]
             container = get_container_data(dockerClient, container_id)
+            print(container)
             hosts[container_id] = container
             update_hosts_file()
 
-        if status=="stop" or status=="die" or status=="destroy":
-            container_id = e["id"]
+        if action == "stop" or action == "die" or action == "destroy":
+            container_id = e["Actor"]["ID"]
             if container_id in hosts:
                 hosts.pop(container_id)
                 update_hosts_file()
@@ -62,77 +64,88 @@ def get_container_data(dockerClient, container_id):
     container_hostname = info["Config"]["Hostname"]
     container_name = info["Name"].strip("/")
     container_ip = info["NetworkSettings"].get("IPAddress")
-    if info["Config"]["Domainname"]:
-        container_hostname = container_hostname + "." + info["Config"]["Domainname"]
+    if container_domainname := info["Config"].get("Domainname"):
+        container_hostname = container_hostname + "." + container_domainname
 
     result = []
 
     for values in info["NetworkSettings"]["Networks"].values():
-
-        if not values["Aliases"]:
-            continue
+        # if not values["Aliases"]:
+        #     continue
+        aliases = values.get("Aliases") or []
 
         result.append({
-                "ip": values["IPAddress"] ,
-                "name": container_name,
-                "domains": set(values["Aliases"] + [container_name, container_hostname])
-            })
+            "ip": values["IPAddress"],
+            "name": container_name,
+            "domains": set(aliases + [container_name, container_hostname])
+        })
 
     if container_ip:
-        result.append({"ip": container_ip, "name": container_name, "domains": [container_name, container_hostname ]})
+        result.append({"ip": container_ip, "name": container_name, "domains": [container_name, container_hostname]})
 
     return result
 
 
 def update_hosts_file():
-    if len(hosts)==0:
+    if len(hosts) == 0:
         print("Removing all hosts before exit...")
     else:
         print("Updating hosts file with:")
 
-    for id,addresses in hosts.items():
+    for id, addresses in hosts.items():
         for addr in addresses:
             print("ip: %s domains: %s" % (addr["ip"], addr["domains"]))
 
     #read all the lines of thge original file
     lines = []
-    with open(hosts_path,"r+") as hosts_file:
+    with open(hosts_path, "r+") as hosts_file:
         lines = hosts_file.readlines()
 
     #remove all the lines after the known pattern
-    for i,line in enumerate(lines):
-        if line==enclosing_pattern:
+    for i, line in enumerate(lines):
+        if line == enclosing_pattern:
             lines = lines[:i]
-            break;
+            break
 
     #remove all the trailing newlines on the line list
     if lines:
-        while lines[-1].strip()=="": lines.pop()
+        while lines[-1].strip() == "":
+            lines.pop()
 
     #append all the domain lines
-    if len(hosts)>0:
-        lines.append("\n\n"+enclosing_pattern)
+    if len(hosts) > 0:
+        lines.append("\n\n" + enclosing_pattern)
 
         for id, addresses in hosts.items():
             for addr in addresses:
-                lines.append("%s    %s\n"%(addr["ip"],"   ".join(addr["domains"])))
+                lines.append("%s    %s\n" % (addr["ip"], "   " . join(addr["domains"])))
 
         lines.append("#-----Do-not-add-hosts-after-this-line-----\n\n")
 
-    #write it on the auxiliar file
-    aux_file_path = hosts_path+".aux"
-    with open(aux_file_path,"w") as aux_hosts:
+    # write it on the auxiliar file
+    aux_file_path = hosts_path + ".aux"
+    with open(aux_file_path, "w") as aux_hosts:
         aux_hosts.writelines(lines)
 
-    #replace etc/hosts with aux file, making it atomic
+    # replace etc/hosts with aux file, making it atomic
     shutil.move(aux_file_path, hosts_path)
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='Synchronize running docker container IPs with host /etc/hosts file.')
-    parser.add_argument('socket', type=str, nargs="?", default="tmp/docker.sock", help='The docker socket to listen for docker events.')
-    parser.add_argument('file', type=str, nargs="?", default="/tmp/hosts", help='The /etc/hosts file to sync the containers with.')
+    parser = argparse.ArgumentParser(
+        description='Synchronize running docker container IPs with host /etc/hosts file.'
+    )
+    parser.add_argument(
+        'socket', type=str, nargs="?",
+        default="tmp/docker.sock", help='The docker socket to listen for docker events.'
+    )
+    parser.add_argument(
+        'file', type=str, nargs="?",
+        default="/tmp/hosts", help='The /etc/hosts file to sync the containers with.'
+    )
+
     return parser.parse_args()
+
 
 if __name__ == '__main__':
     main()
