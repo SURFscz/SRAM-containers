@@ -1,4 +1,4 @@
-FROM bitnami/openldap:2.6
+FROM bitnamilegacy/openldap:2.6
 
 # Do an initial clean up and general upgrade of the distribution
 # ENV DEBIAN_FRONTEND noninteractive
