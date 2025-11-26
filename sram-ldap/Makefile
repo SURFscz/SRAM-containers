@@ -15,7 +15,7 @@ build: ## Build image
 
 start: ## Start container
 	docker run -ti --rm \
-	-v $(PWD)/web:/opt/web \
+	--name $(IMAGE) \
 	-p 389:389 \
 	-p 636:636 \
 	$(IMAGE)
