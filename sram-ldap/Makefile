@@ -18,6 +18,9 @@ start: ## Start container
 	--name $(IMAGE) \
 	-p 389:389 \
 	-p 636:636 \
+	-e LDAP_DOMAIN=scz-vm.net \
+	-e LDAP_ORGANISATION="SURF SRAM" \
+	-e LDAP_ROOTPASS=secret \
 	$(IMAGE)
 
 clean: ## Remove image
