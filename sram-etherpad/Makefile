@@ -18,6 +18,8 @@ start: ## Start container
 	-v ${PWD}/config/settings.json:/opt/etherpad-lite/settings.json \
 	$(IMAGE)
 
+run: start
+
 clean: ## Remove image
 	docker rmi \
 	$(IMAGE)

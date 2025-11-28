@@ -30,6 +30,14 @@ EOF
 
   RUNLEVEL=1 DEBIAN_FRONTEND=noninteractive dpkg-reconfigure slapd
 
+  cat <<EOF | slapmodify -n 0
+dn: olcDatabase={0}config,cn=config
+changetype: modify
+replace: olcRootPW
+olcRootPW: ${LDAP_ROOTPASS}
+EOF
+  chown -R openldap: /etc/ldap/slapd.d
+
   touch /var/lib/ldap/docker_bootstrapped
 else
   status "found already-configured slapd"

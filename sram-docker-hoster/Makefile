@@ -17,6 +17,8 @@ start: ## Start container
 	docker run -ti --rm \
 	$(IMAGE)
 
+run: start
+
 clean: ## Remove image
 	docker rmi \
 	$(IMAGE)
