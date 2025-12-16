@@ -18,7 +18,7 @@ start: ## Start container
 	-p 2222:22 \
 	$(IMAGE)
 
-clean: ## Remmove image
+clean: ## Remove image
 	docker rmi \
 	$(IMAGE)
 

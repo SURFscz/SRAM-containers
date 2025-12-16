@@ -22,6 +22,6 @@ start: ## Start container
 	-v $(PWD)/src:/opt/pyff/src \
 	$(IMAGE)
 
-clean: ## Remmove image
+clean: ## Remove image
 	docker rmi \
 	$(IMAGE)

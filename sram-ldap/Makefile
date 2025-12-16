@@ -1,5 +1,5 @@
 SHELL := /bin/bash
-IMAGE = sram-ldap
+IMAGE = sram-ldap-legacy
 
 .PHONY: help
 
@@ -20,6 +20,6 @@ start: ## Start container
 	-p 636:636 \
 	$(IMAGE)
 
-clean: ## Remmove image
+clean: ## Remove image
 	docker rmi \
 	$(IMAGE)
