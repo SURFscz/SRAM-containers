@@ -1,5 +1,5 @@
 SHELL := /bin/bash
-IMAGE = sram-ldap
+IMAGE = sram-ldap-legacy
 
 .PHONY: help
 
