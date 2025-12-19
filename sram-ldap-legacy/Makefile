@@ -1,5 +1,5 @@
 SHELL := /bin/bash
-IMAGE = sram-docker-hoster
+IMAGE = sram-ldap-legacy
 
 .PHONY: help
 
@@ -15,10 +15,11 @@ build: ## Build image
 
 start: ## Start container
 	docker run -ti --rm \
+	-v $(PWD)/web:/opt/web \
+	-p 389:389 \
+	-p 636:636 \
 	$(IMAGE)
 
-run: start
-
-clean: ## Remove image
+clean: ## Remmove image
 	docker rmi \
 	$(IMAGE)

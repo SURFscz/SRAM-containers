@@ -1,5 +1,5 @@
 SHELL := /bin/bash
-IMAGE = sram-ldap-legacy
+IMAGE = sram-ldap
 
 .PHONY: help
 
@@ -15,9 +15,12 @@ build: ## Build image
 
 start: ## Start container
 	docker run -ti --rm \
-	-v $(PWD)/web:/opt/web \
+	--name $(IMAGE) \
 	-p 389:389 \
 	-p 636:636 \
+	-e LDAP_DOMAIN=scz-vm.net \
+	-e LDAP_ORGANISATION="SURF SRAM" \
+	-e LDAP_ROOTPASS=secret \
 	$(IMAGE)
 
 clean: ## Remove image

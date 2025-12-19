@@ -18,6 +18,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          - context: ./sram-ldap-legacy
+            image: ghcr.io/surfscz/sram-ldap-legacy
           - context: ./sram-ldap
             image: ghcr.io/surfscz/sram-ldap
           - context: ./sram-pyff
