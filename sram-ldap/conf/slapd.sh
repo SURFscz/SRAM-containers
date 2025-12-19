@@ -1,4 +1,5 @@
 #!/bin/sh
+# https://github.com/nickstenning/docker-slapd
 
 set -eu
 
