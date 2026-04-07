@@ -1,7 +1,7 @@
 FROM python:3.12-slim-bookworm
 
 # Do an initial clean up and general upgrade of the distribution
-ENV DEBIAN_FRONTEND noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
 RUN apt update && apt -y dist-upgrade && apt autoremove -y && rm -rf /var/lib/apt
 
 # Create pyff dir
