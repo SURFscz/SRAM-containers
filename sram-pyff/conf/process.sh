@@ -1,6 +1,12 @@
 #!/bin/bash
 set -e
 
+# Ignore setuptools pkg_resources deprecation warning
+# There's nothing we can do about it
+# https://github.com/IdentityPython/pyFF/issues/306
+# https://setuptools.pypa.io/en/stable/history.html#v82-0-0
+export PYTHONWARNINGS=ignore
+
 # allow * to expand to an empty string
 shopt -s nullglob
 
