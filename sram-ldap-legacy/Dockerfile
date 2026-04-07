@@ -1,7 +1,7 @@
 FROM bitnamilegacy/openldap:2.6
 
 # Do an initial clean up and general upgrade of the distribution
-# ENV DEBIAN_FRONTEND noninteractive
+# ENV DEBIAN_FRONTEND=noninteractive
 # RUN apt clean && apt autoclean && apt update
 # RUN apt -y upgrade && apt -y dist-upgrade
 
